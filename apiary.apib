@@ -141,6 +141,8 @@ HOST: https://aik-yar.ru/api/v1
             id уровня доступа
         + login: vasya2004 (string) 
             Уникальный логин пользователя для индентификации в системе.
+        + password: qwerty (string, required) 
+            Пароль пользователя. Возможно, нужно хранить в зашифрованном виде.
         + name: Вася (string) 
             Имя человека.
         + surname: Пупкин (string) 
@@ -257,7 +259,28 @@ HOST: https://aik-yar.ru/api/v1
 Для создания нового аккаунта требуется JSON-объект.
 
 + Request (application/json)
-    + Attributes (User)
+    + Attributes (object)
+        + accessID: 3 (number, required)
+            id уровня доступа
+        + login: vasya2004 (string, required) 
+            Уникальный логин пользователя для индентификации в системе.
+        + password: qwerty (string, required) 
+            Пароль пользователя. Возможно, нужно хранить в зашифрованном виде.
+        + name: Вася (string, required) 
+            Имя человека.
+        + surname: Пупкин (string, required) 
+            Фамилия человека.
+        + middle_name: Михайлович (string) 
+            Отчество человека.
+        + icon: 1d11222d112d1d1 (string)
+            Base64 кодировка изображения.
+        + positionID: 1 (string) 
+            id должности. Указывается в случае, если пользователь – сотрудник.
+        + cash: 500 (number)
+            Виден только родителю.
+            Cчет в рублях. Выставляется родителю. 
+            0 - ничего не нужно оплачивать.
+            XXX р. - нужно оплатить такую сумму.
     
 + Response 201
 
@@ -282,16 +305,19 @@ HOST: https://aik-yar.ru/api/v1
 + Response 501
 
 
+## Пользователи конкретного уровня [/users/access/{id}]
+
++ Parameters
+    + id: 123 (number, required)
+        id позиции сотрудника
+
 ### Получение списка пользователя n-ого уровня [GET]
 
 Получает список всех пользователей нужного уровня доступа 
-(ученик[0], родитель[1], преподаватель[2], администратор[3], руководитель[4]).
+(ученик[1], родитель[2], преподаватель[3], администратор[4], руководитель[5]).
 
 + Request (application/json)
-    + Attributes
-        + access: 3 (number, required)
-        уровень доступа пользователей
-    
+ 
 + Response 200 (application/json)
     + Attributes
         + persons (array)
